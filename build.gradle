@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+ext {
+    breinApiJavaVersion = "2.2.0"
+    slf4jVersion = "1.7.36"
+    gsonVersion = "1.7.36"
+    junitVersion = "4.13.1"
+    jerseyClientVersion = "1.19.1"
+    unirestVersion  = "1.4.9"
+}
+
+dependencies {
+    implementation("com.sun.jersey:jersey-client:${jerseyClientVersion}")
+    implementation("com.mashape.unirest:unirest-java:${unirestVersion}")
+    implementation "com.breinify:brein-api-library-java:${breinApiJavaVersion}"
+    testImplementation "junit:junit:version${junitVersion}"
+    testImplementation 'junit:junit:4.13.1'
+}
+
+test {
+    useJUnitPlatform()
+}
