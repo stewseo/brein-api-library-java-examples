@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id "com.dorongold.task-tree" version "2.1.0"
 }
 
 group 'org.example'
@@ -8,23 +9,54 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
 ext {
-    breinApiJavaVersion = "2.2.0"
+    breinApiVersion = "2.2.0"
     slf4jVersion = "1.7.36"
     gsonVersion = "1.7.36"
-    junitVersion = "4.13.1"
+
+    junit4Version = "4.13.1"
+    junit5Version = "5.9.0"
     jerseyClientVersion = "1.19.1"
     unirestVersion  = "1.4.9"
 }
 
 dependencies {
-    implementation("com.sun.jersey:jersey-client:${jerseyClientVersion}")
-    implementation("com.mashape.unirest:unirest-java:${unirestVersion}")
-    implementation "com.breinify:brein-api-library-java:${breinApiJavaVersion}"
-    testImplementation "junit:junit:version${junitVersion}"
-    testImplementation 'junit:junit:4.13.1'
+
+    implementation project("elasticsearch-impl")
+    implementation ("com.sun.jersey:jersey-client:${jerseyClientVersion}")
+    implementation ("com.mashape.unirest:unirest-java:${unirestVersion}")
+
+    implementation "com.breinify:brein-api-library-java:${breinApiVersion}"
+
+    testImplementation "junit:junit:version${junit4Version}"
+    testImplementation "org.junit.vintage:junit-vintage-engine:${junit5Version}"
 }
 
 test {
     useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+jar {
+    archiveFileName = 'brein-api-library-java-examples'
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

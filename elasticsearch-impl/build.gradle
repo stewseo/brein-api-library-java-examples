@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // elasticsearch
+    yelpFusionClientVersion = "1.0.63-fix"
+
+    parssonVersion = '1.0.0'
+
+    // testing
+    jUnitVersion = "5.9.0"
+}
+
+dependencies {
+
+    api "io.github.stewseo:yelp-fusion-client:${yelpFusionClientVersion}"
+
+    // https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/installation.html
+    testImplementation("org.eclipse:yasson:2.0.4") {
+        // Exclude Glassfish as we use Parsson (basically Glassfish renamed in the Jakarta namespace).
+        exclude(group: "org.glassfish", module: "jakarta.json")
+    }
+    testImplementation("io.github.classgraph:classgraph:4.8.147")
+
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testImplementation "org.junit.vintage:junit-vintage-engine:${jUnitVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('taskTree').configure {
+    depth = 3 // limit tree depth to 3. Equivalent to the --depth CLI task option.
+    withInputs = true // prints task inputs in red just below the task in the tree. Equivalent to the --with-inputs CLI task option.
+    withOutputs = true // prints task inputs in red just below the task in the tree. Equivalent to the --with-outputs CLI task option.
+    repeat = true  // allows printing a sub-tree in the task-tree more than once. Equivalent to the --repeat CLI task option
+    impliesSubProjects = true  // disables printing task-tree for child projects in a multi-project
+}

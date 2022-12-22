@@ -1,2 +1,3 @@
-rootProject.name = 'breinify-examples'
+rootProject.name = 'brein-api-library-java-example'
+include 'elasticsearch-impl'
 
