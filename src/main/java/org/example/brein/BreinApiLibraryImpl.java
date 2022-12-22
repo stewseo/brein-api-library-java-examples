@@ -4,19 +4,12 @@ import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.gson.Gson;
-
-import io.github.stewseo.yelp.fusion.client.Elasticsearch;
-
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import jakarta.json.JsonValue;
 import org.example.ElasticsearchImpl;
-import org.example.business.Business;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,12 +75,12 @@ public class BreinApiLibraryImpl {
 
         for (Business business : businesses) {
 
-            if (setOfBusinessIds.add(business.getId())) {
+            if (setOfBusinessIds.add(business.id())) {
 
                 br.operations(op -> op
                         .index(idx -> idx
                                 .index(index)
-                                .id(index + "-" + business.getId())
+                                .id(index + "-" + business.id())
                                 .document(business)
                                 .pipeline(timestampPipeline)
                         )
