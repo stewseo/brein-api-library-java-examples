@@ -1,4 +1,4 @@
-## Testing a response from the TemporalData API to search for popular Yelp restaurants in SF
+## Using the TemporalData client to search for the most popular Yelp restaurants in SF
 
 
 ```
